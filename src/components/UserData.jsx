@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const apiUrl = "https://5000-tiwari007-dataneuronass-esy0p7krmxc.ws-us110.gitpod.io"
+const apiUrl = "https://5000-tiwari007-dataneuronass-esy0p7krmxc.ws-us112.gitpod.io"
 
 const UserData = ({ userData, dataAltered }) => {
     const [data, setData] = useState({});
@@ -100,7 +100,7 @@ const UserData = ({ userData, dataAltered }) => {
                 />
                 <div className="mt-4">
                     <button disabled={!isInputFilled} onClick={(e) => isEdit ? handleUpdate() : handleAdd(e)} className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2 ${!isInputFilled && 'opacity-50 cursor-not-allowed'}`}>
-                        { isEdit ? 'Update' : 'Edit' }
+                        { isEdit ? 'Update' : 'Add' }
                     </button>
                 </div>
             </div>

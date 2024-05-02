@@ -3,7 +3,7 @@ import axios from 'axios';
 import ApiCounts from './ApiCounts';
 import UserData from './UserData';
 
-const apiUrl = "https://5000-tiwari007-dataneuronass-esy0p7krmxc.ws-us110.gitpod.io"
+const apiUrl = "https://5000-tiwari007-dataneuronass-esy0p7krmxc.ws-us112.gitpod.io"
 
 const DataNeuron = () => {
   const [userData, setUserData] = useState([]);
