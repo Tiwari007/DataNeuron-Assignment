@@ -6,6 +6,8 @@ const apiUrl = "https://5000-tiwari007-dataneuronass-esy0p7krmxc.ws-us110.gitpod
 const UserData = ({ userData, dataAltered }) => {
     const [data, setData] = useState({});
     const [isInputFilled, setIsInputFilled] = useState(false); // Add state to track input filled status
+    const [isEdit, setIsEdit] = useState(false)
+    const [selectedID, setSelectedId] = useState()
 
     const dataChanged = () => {
         dataAltered(true)
@@ -24,6 +26,35 @@ const UserData = ({ userData, dataAltered }) => {
         setData({ name: "", age: "", designation: "" })
         dataChanged()
     };
+
+
+    const handleSelect = async (id) => {
+        setSelectedId(id)
+        console.log("id: ", id);
+        const dataTobeEditted = userData.filter(item => item.userData.id === id)[0];
+        console.log("dataTobeEditted: ", dataTobeEditted);
+        setIsEdit(true)
+        setData({
+            name: dataTobeEditted.userData.name,
+            age: dataTobeEditted.userData.age,
+            designation: dataTobeEditted.userData.designation 
+        })
+
+    }
+
+
+    const handleUpdate = async () => {
+        const temp = { ...data, id: Number(Math.random() * 100000) }
+        const dataTobeSend = { userData: temp, count: 12 }
+        try {
+            await axios.put(`${apiUrl}/updateUser/${selectedID}`, dataTobeSend);
+        } catch (error) {
+            console.error('Error adding data:', error);
+        }
+
+        setData({ name: "", age: "", designation: "" })
+        dataChanged()
+    }
 
     // Function to check if all input fields are filled
     const checkInputFilled = () => {
@@ -68,8 +99,8 @@ const UserData = ({ userData, dataAltered }) => {
                     className="w-full p-2 mt-2"
                 />
                 <div className="mt-4">
-                    <button disabled={!isInputFilled} onClick={(e) => handleAdd(e)} className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2 ${!isInputFilled && 'opacity-50 cursor-not-allowed'}`}>
-                        Add
+                    <button disabled={!isInputFilled} onClick={(e) => isEdit ? handleUpdate() : handleAdd(e)} className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2 ${!isInputFilled && 'opacity-50 cursor-not-allowed'}`}>
+                        { isEdit ? 'Update' : 'Edit' }
                     </button>
                 </div>
             </div>
@@ -79,12 +110,12 @@ const UserData = ({ userData, dataAltered }) => {
                     {
                         userData?.map((ele) => {
                             return (
-                                <li key={ele.id} className="w-full bg-white border border-gray-200 rounded-lg shadow flex p-4 my-2">
+                                <li key={ele.userData.id} className="w-full bg-white border border-gray-200 rounded-lg shadow flex p-4 my-2">
                                     <h1 className='text-grey capitalize px-4'>{ele.userData.name}</h1>
                                     <h1 className='text-grey capitalize px-4'>{ele.userData.age}</h1>
                                     <h1 className='text-grey capitalize px-4'>{ele.userData.designation}</h1>
-                                    <button onClick={() => handleUpdate(ele.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-6 rounded">
-                                        Update
+                                    <button onClick={() => handleSelect(ele.userData.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-6 rounded">
+                                        Select
                                     </button>
                                 </li>
                             )
